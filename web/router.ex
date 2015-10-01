@@ -15,8 +15,6 @@ defmodule BdRt.Router do
 
   scope "/", BdRt do
     pipe_through :browser # Use the default browser stack
-
-    get "/", PageController, :index
   end
 
   # Other scopes may use custom stacks.
