@@ -28,7 +28,7 @@ defmodule BdRt.Collector do
   end
 
   def broadcast_vehicle_position(vehicle_position) do
-    BdRt.Endpoint.broadcast! topic(vehicle_position), "vehiclePositionUpdate", vehicle_position
+    BdRt.Endpoint.broadcast! topic(vehicle_position), "vehiclePosition:update", vehicle_position
   end
 
   def topic(vehicle_position) do

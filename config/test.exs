@@ -12,8 +12,11 @@ config :logger, level: :warn
 # Configure your database
 config :bd_rt, BdRt.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
   database: "bd_rt_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+# You need to set your username and password in a local config
+# This is compile time, so dotenv won't work. Basically I don't
+# know how to make this optional or have reasonable defaults
+import_config "local.exs"
