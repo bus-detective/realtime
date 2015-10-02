@@ -35,8 +35,11 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :bd_rt, BdRt.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
-  database: "bd_rt_dev",
+  database: "bus_detective_development",
   hostname: "localhost",
   pool_size: 10
+
+# You need to set your username and password in a local config
+# This is compile time, so dotenv won't work. Basically I don't
+# know how to make this optional or have reasonable defaults
+import_config "local.exs"
