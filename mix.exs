@@ -18,8 +18,17 @@ defmodule BdRt.Mixfile do
   # Type `mix help compile.app` for more information.
   def application do
     [mod: {BdRt, []},
-     applications: [:phoenix, :phoenix_html, :cowboy, :logger,
-                    :phoenix_ecto, :postgrex]]
+     applications:
+     [
+       :phoenix,
+       :phoenix_html,
+       :cowboy,
+       :logger,
+       :phoenix_ecto,
+       :postgrex,
+       :httpoison,
+       :tzdata
+     ]]
   end
 
   # Specifies which paths to compile per environment.
@@ -37,7 +46,8 @@ defmodule BdRt.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:exprotobuf, "~> 0.11.0"},
      {:timex, "~> 0.19.4"},
-     {:cowboy, "~> 1.0"}]
+     {:cowboy, "~> 1.0"},
+     {:httpoison, "~> 0.7.2"}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.

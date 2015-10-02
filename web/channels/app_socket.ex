@@ -2,7 +2,7 @@ defmodule BdRt.AppSocket do
   use Phoenix.Socket
 
   ## Channels
-  channel "vehiclPositions:*", BdRt.VehiclePositionsChannel
+  channel "vehiclePosition:*", BdRt.VehiclePositionsChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

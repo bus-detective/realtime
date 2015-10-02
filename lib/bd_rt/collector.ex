@@ -16,8 +16,9 @@ defmodule BdRt.Collector do
 
   def handle_info(:collect, _message) do
     Logger.info "Collecting Vehicle Positions"
-    Runner.collect()
-    |> Stream.map(&broadcast_vehicle_position/1)
+    agencies
+    |> Enum.map(&Runner.collect/1)
+    |> Enum.each(&broadcast_vehicle_positions/1)
 
     schedule_collect()
     {:noreply, nil}
@@ -27,14 +28,24 @@ defmodule BdRt.Collector do
     Process.send_after(self(), :collect, @interval)
   end
 
-  def broadcast_vehicle_position(vehicle_position) do
-    BdRt.Endpoint.broadcast! topic(vehicle_position), "vehiclePosition:update", vehicle_position
+  defp agencies do
+    BdRt.Agency.with_vehicle_postion_url
+    |> BdRt.Repo.all
   end
 
-  def topic(vehicle_position) do
+  def broadcast_vehicle_positions(vehicle_positions) do
+    Enum.each(vehicle_positions, &broadcast_vehicle_position/1)
+  end
+
+
+  def broadcast_vehicle_position(vehicle_position) do
+    BdRt.Endpoint.broadcast! "vehiclePosition" <> sub_topic(vehicle_position), "vehiclePosition:update", vehicle_position
+  end
+
+  def sub_topic(vehicle_position) do
     agency_id = vehicle_position.agency_id
     trip_id = vehicle_position.trip_remote_id
-    <<"vehiclePosition:agency", agency_id::size(32), ":trip:", trip_id:: size(16)>>
+    "agency:#{agency_id}:trip:#{trip_id}"
   end
 end
 
