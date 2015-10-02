@@ -35,6 +35,8 @@ defmodule BdRt.Mixfile do
      {:postgrex, ">= 0.0.0"},
      {:phoenix_html, "~> 2.1"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
+     {:exprotobuf, "~> 0.11.0"},
+     {:timex, "~> 0.19.4"},
      {:cowboy, "~> 1.0"}]
   end
 
