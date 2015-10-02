@@ -1,7 +1,7 @@
 defmodule BdRt.Endpoint do
   use Phoenix.Endpoint, otp_app: :bd_rt
 
-  socket "/socket", BdRt.UserSocket
+  socket "/ws", BdRt.AppSocket
 
   # Serve at "/" the static files from "priv/static" directory.
   #

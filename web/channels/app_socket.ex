@@ -1,4 +1,4 @@
-defmodule BdRt.UserSocket do
+defmodule BdRt.AppSocket do
   use Phoenix.Socket
 
   ## Channels
