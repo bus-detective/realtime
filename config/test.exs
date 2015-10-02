@@ -12,7 +12,7 @@ config :logger, level: :warn
 # Configure your database
 config :bd_rt, BdRt.Repo,
   adapter: Ecto.Adapters.Postgres,
-  database: "bd_rt_test",
+  database: "bus_detective_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 

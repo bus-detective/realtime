@@ -35,7 +35,7 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :bd_rt, BdRt.Repo,
   adapter: Ecto.Adapters.Postgres,
-  database: "bd_rt_dev",
+  database: "bus_detective_development",
   hostname: "localhost",
   pool_size: 10
 
