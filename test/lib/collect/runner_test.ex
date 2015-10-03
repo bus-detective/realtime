@@ -20,15 +20,5 @@ defmodule BdRt.Collector.RunnerTest do
 
     assert Repo.one(count_query) > 0
   end
-
-  test "collect for all agencies", %{agency: agency} do
-    BdRt.Collector.Runner.collect
-
-    count_query = from v in BdRt.VehiclePosition,
-      where: v.agency_id == ^agency.id,
-      select: count(v.id)
-
-    assert Repo.one(count_query) > 0
-  end
 end
 
