@@ -3,7 +3,6 @@ defmodule BdRt.Service do
 
   schema "services" do
     field :remote_id, :string
-    field :service_id, :string
     field :monday, :boolean
     field :tuesday, :boolean
     field :wednesday, :boolean
