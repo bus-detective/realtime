@@ -18,6 +18,19 @@ defmodule BdRt.Stop do
 
     timestamps inserted_at: :created_at
   end
+
+  @direction_labels %{
+    "i" => "inbound",
+    "o" => "outbound",
+    "n" => "northbound",
+    "s" => "southbound",
+    "e" => "eastbound",
+    "w" => "westbound",
+  }
+
+  def direction(model) do
+    Dict.get @direction_labels, String.last(model.remote_id)
+  end
 end
 
 
