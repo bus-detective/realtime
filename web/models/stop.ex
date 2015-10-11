@@ -56,7 +56,8 @@ defmodule BdRt.Stop do
           SIN(?)*SIN(RADIANS(latitude))))*?) ASC", ^rad_lat, ^rad_long, ^rad_lat, ^rad_long, ^rad_lat, ^earth_radius_miles)
   end
 
-  defp deg_2_rads(degrees) do
+  defp deg_2_rads(degrees) when is_bitstring(degrees), do: deg_2_rads(String.to_float(degrees))
+  defp deg_2_rads(degrees) when is_float(degrees) do
     degrees * :math.pi / 180
   end
 end
