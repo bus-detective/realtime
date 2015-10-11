@@ -49,7 +49,7 @@ defmodule BdRt.Ordinalize do
   def englishize(i) do
     humanized = Enum.at(@cache, i)
     # 13-19
-    humanized = String.replace(humanized, ~r{teen$}, "th")
+    humanized = String.replace(humanized, ~r{teen$}, "teenth")
     # 20, 30, 40, etc.
     humanized = String.replace(humanized, ~r{ty$}, "tieth")
 

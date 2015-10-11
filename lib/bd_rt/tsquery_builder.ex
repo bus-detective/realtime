@@ -26,8 +26,12 @@ defmodule BdRt.TsqueryBuilder do
   end)
 
   # Preprocess the above so we can just look up by a key
-  @substitution_map Enum.reduce(@substitutions, %{}, fn(ts, map) ->
-    Enum.reduce(ts, map, fn(term, accum) -> Dict.put(accum, term, ts) end) end)
+  @substitution_map Enum.reduce(@substitutions, %{}, fn(ts, accum) ->
+    Enum.reduce(ts, accum, fn(term, accum) -> Dict.put(accum, term, ts) end) end)
+
+  def subs do
+    @substitutions
+  end
 
   def build(nil) do
     nil

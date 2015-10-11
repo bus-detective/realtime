@@ -25,5 +25,10 @@ defmodule BdRt.TsqueryBuilderTest do
   test 'escapes the values' do
     assert TsqueryBuilder.build("Highland's & University") == "(highland's) & (university)"
   end
+
+  test 'expands numerical values' do
+    assert TsqueryBuilder.build("first") == "((1 | first | 1st))"
+    assert TsqueryBuilder.build("eighth") == "((8 | eighth | 8th))"
+  end
 end
 
