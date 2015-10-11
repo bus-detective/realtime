@@ -31,7 +31,13 @@ defmodule BdRt.Stop do
   def direction(model) do
     Dict.get @direction_labels, String.last(model.remote_id)
   end
+
+
+  def search(ts_query_terms) do
+    # Ecto is broken and you can't give a variable to fragment, so these have to be inline
+    from st in __MODULE__,
+    where: fragment("to_tsvector('english', coalesce(?::text, '')) || to_tsvector('english', coalesce(?::text, '')) @@ to_tsquery('english', ?)", st.name, st.code, ^ts_query_terms),
+    order_by: fragment("ts_rank(to_tsvector('english', coalesce(?::text, '')) || to_tsvector('english', coalesce(?::text, '')), to_tsquery('english', ?)) DESC", st.name, st.code, ^ts_query_terms)
+  end
 end
-
-
 
