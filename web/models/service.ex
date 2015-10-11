@@ -20,12 +20,11 @@ defmodule BdRt.Service do
   end
 
   def for_time(time), do: for_time(time, __MODULE__)
-
   def for_time(time, query) do
     day_of_week = Date.weekday(Date.from(time)) |> Date.day_name |> String.downcase
     dow = String.to_atom(day_of_week)
 
-    query = from s in query,
+    from s in query,
     where: ^time >= s.start_date and ^time <= s.end_date,
     where: field(s, ^dow) == true
   end

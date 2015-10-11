@@ -13,7 +13,7 @@ defmodule BdRt.VehiclePositionsChannelTest do
   test "can subscribe to a socket and get messages", %{vehicle_position: vehicle_position} do
     BdRt.Collector.broadcast_vehicle_position(vehicle_position)
 
-    assert_broadcast "vehiclePosition:update", vehicle_position
+    assert_broadcast("vehiclePosition:update", vehicle_position)
   end
 end
 

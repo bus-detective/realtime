@@ -1,4 +1,4 @@
-defmodule BdRt.StopTest do
+defmodule BdRt.StopDirectionTest do
   use BdRt.ModelCase
 
   alias BdRt.Stop

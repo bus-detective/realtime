@@ -1,4 +1,4 @@
-defmodule BdRt.StopTest do
+defmodule BdRt.StopSearchTest do
   use BdRt.ModelCase
 
   alias BdRt.Agency
