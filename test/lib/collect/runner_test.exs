@@ -3,22 +3,17 @@ defmodule BdRt.Collector.RunnerTest do
   use BdRt.ModelCase
 
   setup_all do
-    Application.put_env :bd_pro, :collector_backend, BdRt.Collector.Backend.Fake
+    Application.put_env :bd_rt, :collector_backend, BdRt.Collector.Backend.Fake
   end
 
   setup do
-    {:ok, agency} = Repo.insert(%BdRt.Agency{name: "Metro"})
+    {:ok, agency} = Repo.insert(%BdRt.Agency{name: "Metro", gtfs_vehicle_positions_url: "http://example.com"})
     {:ok, agency: agency}
   end
 
   test "collect with a specific agency", %{agency: agency} do
-    BdRt.Collector.Runner.collect(agency)
-
-    count_query = from v in BdRt.VehiclePosition,
-      where: v.agency_id == ^agency.id,
-      select: count(v.id)
-
-    assert Repo.one(count_query) > 0
+    results = BdRt.Collector.Runner.collect(agency)
+    assert Enum.count(results) > 0
   end
 end
 
