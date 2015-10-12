@@ -5,8 +5,8 @@ defmodule BdRt.StopTime do
     field :stop_headsign, :string
     field :pickup_type, :integer
     field :drop_off_type, :integer
-    field :arrival_time, :string
-    field :departure_time, :string # TODO: Create a custom interval type
+    field :arrival_time, BdRt.Ecto.Interval
+    field :departure_time, BdRt.Ecto.Interval
     field :stop_sequence, :integer
 
     belongs_to :agency, BdRt.Agency
