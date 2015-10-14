@@ -11,15 +11,15 @@ defmodule BdRt.CalculatedStopTimeTest do
   defmodule StopsOnDifferenDays do
     use BdRt.ModelCase
     setup do
-      {:ok, agency} = BdRt.Repo.insert(%Agency{name: "test"})
+      {:ok, agency} = BdRt.Repo.insert(%Agency{name: "test", timezone: "America/New_York"})
       {:ok, service} = BdRt.Repo.insert(%Service{agency_id: agency.id, tuesday: true, wednesday: true})
       {:ok, trip} = BdRt.Repo.insert(%Trip{agency_id: agency.id, remote_id: "940135", service_id: service.id})
       {:ok, stop} = BdRt.Repo.insert(%Stop{agency_id: agency.id, remote_id: "HAMBELi"})
 
-      {:ok, _} = BdRt.Repo.insert(%StopTime{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: Ecto.Type.cast(BdRt.Ecto.Interval, "22:00:00")})
-      {:ok, _} = BdRt.Repo.insert(%StopTime{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: Ecto.Type.cast(BdRt.Ecto.Interval, "23:00:00")})
-      {:ok, _} = BdRt.Repo.insert(%StopTime{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: Ecto.Type.cast(BdRt.Ecto.Interval, "00:30:00")})
-      {:ok, _} = BdRt.Repo.insert(%StopTime{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: Ecto.Type.cast(BdRt.Ecto.Interval, "01:00:00")})
+      {:ok, _} = BdRt.Repo.insert(StopTime.changeset(%StopTime{}, %{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: "22:00:00"}))
+      {:ok, _} = BdRt.Repo.insert(StopTime.changeset(%StopTime{}, %{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: "23:00:00"}))
+      {:ok, _} = BdRt.Repo.insert(StopTime.changeset(%StopTime{}, %{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: "00:30:00"}))
+      {:ok, _} = BdRt.Repo.insert(StopTime.changeset(%StopTime{}, %{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: "01:00:00"}))
       :ok
     end
 
@@ -41,15 +41,15 @@ defmodule BdRt.CalculatedStopTimeTest do
   defmodule StopsOnSameDays do
     use BdRt.ModelCase
     setup do
-      {:ok, agency} = BdRt.Repo.insert(%Agency{name: "test"})
+      {:ok, agency} = BdRt.Repo.insert(%Agency{name: "test", timezone: "America/New_York"})
       {:ok, service} = BdRt.Repo.insert(%Service{agency_id: agency.id, tuesday: true, wednesday: true})
       {:ok, trip} = BdRt.Repo.insert(%Trip{agency_id: agency.id, remote_id: "940135", service_id: service.id})
       {:ok, stop} = BdRt.Repo.insert(%Stop{agency_id: agency.id, remote_id: "HAMBELi"})
 
-      {:ok, stop_time1} = BdRt.Repo.insert(%StopTime{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: Ecto.Type.cast(BdRt.Ecto.Interval, "22:00:00")})
-      {:ok, stop_time2} = BdRt.Repo.insert(%StopTime{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: Ecto.Type.cast(BdRt.Ecto.Interval, "23:00:00")})
-      {:ok, stop_time3} = BdRt.Repo.insert(%StopTime{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: Ecto.Type.cast(BdRt.Ecto.Interval, "24:30:00")})
-      {:ok, stop_time4} = BdRt.Repo.insert(%StopTime{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: Ecto.Type.cast(BdRt.Ecto.Interval, "25:00:00")})
+      {:ok, _} = BdRt.Repo.insert(StopTime.changeset(%StopTime{}, %{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: "22:00:00"}))
+      {:ok, _} = BdRt.Repo.insert(StopTime.changeset(%StopTime{}, %{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: "23:00:00"}))
+      {:ok, _} = BdRt.Repo.insert(StopTime.changeset(%StopTime{}, %{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: "24:30:00"}))
+      {:ok, _} = BdRt.Repo.insert(StopTime.changeset(%StopTime{}, %{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: "25:00:00"}))
       :ok
     end
 
@@ -69,9 +69,16 @@ defmodule BdRt.CalculatedStopTimeTest do
   end
 
   def to_timestamp(time_str) do
-    time_str
+    result = time_str
     |> Timex.DateFormat.parse!("{ISO}")
-    |> Timex.Date.Convert.to_gregorian
+    |> Timex.Date.Convert.to_erlang_datetime
+    |> Ecto.DateTime.from_erl
+    |> Ecto.DateTime.dump 
+
+    case result do
+      {:ok, dt} -> dt
+      _ -> :error
+    end
   end
 
 end

@@ -8,12 +8,21 @@ defmodule BdRt.StopTime do
     field :arrival_time, BdRt.Ecto.Interval
     field :departure_time, BdRt.Ecto.Interval
     field :stop_sequence, :integer
+    field :shape_dist_traveled, :float
 
     belongs_to :agency, BdRt.Agency
     belongs_to :trip, BdRt.Trip
     belongs_to :stop, BdRt.Stop
 
     timestamps inserted_at: :created_at
+  end
+
+  @required_fields ~w()
+  @optional_fields ~w(stop_headsign pickup_type drop_off_type arrival_time departure_time stop_sequence shape_dist_traveled)
+
+  def changeset(model, params \\ :empty) do
+    model
+    |> cast(params, @required_fields, @optional_fields)
   end
 end
 

@@ -1,15 +1,13 @@
 defmodule BdRt.CalculatedStopTime do
+  defstruct [:id, :stop_sequence, :stop_headsign, :pickup_type,
+   :drop_off_type, :shape_dist_traveled, :agency_id, :stop_id, :trip_id,
+   :arrival_time, :departure_time]
+
   alias BdRt.StopTime
 
   import Ecto.Query
 
-  def between(start_time, end_time), do: between(StopTime, start_time, end_time)
-  def between(query, start_time, end_time) do
-    query
-    |> joins_times(start_time, end_time)
-    |> where([st, a, t, es], fragment("(start_time(?) + ?) BETWEEN (? AT TIME ZONE ?) AND (? AT TIME ZONE ?)", es.date, st.departure_time, ^start_time, a.timezone, ^end_time, a.timezone))
-    |> order_by([st, a, t, es], fragment("start_time(?) + ?", es.date, st.departure_time))
-  end
+  # FIXME: Ecto isn't mature enough: https://github.com/elixir-lang/ecto/issues/1010
 
   # Effective services are those that are the the normal services for trips
   # where service exceptions are also taken into account
@@ -18,11 +16,16 @@ defmodule BdRt.CalculatedStopTime do
   # The second half of the union is for normal services that are not removed
   # (either no exception or an exception that is not 2) (exception = 2 is a
   # removed service)
-  def joins_times(start_time, end_time), do: joins_times(StopTime, start_time, end_time)
-  def joins_times(query, start_time, end_time) do
-    query
-    |> join(:inner, [st], a in BdRt.Agency, st.agency_id == a.id)
-    |> join(:inner, [st, a], t in BdRt.Trip, st.trip_id == t.id)
-    |> join(:inner, [st, a, t], es in fragment("(SELECT * FROM effective_services(?, ?))", ^start_time, ^end_time), t.service_id == es.service_id)
+  def between(start_time, end_time), do: between(StopTime, start_time, end_time)
+  def between(query, start_time, end_time) do
+    from st in query,
+    join: a in assoc(st, :agency),
+    join: t in assoc(st, :trip),
+    join: es in fragment("SELECT es.* FROM effective_services AS es WHERE es.a = ? and es.b = ? AND es.service_id = ?", ^start_time, ^end_time, t.service_id),
+    where: fragment("(start_time(?) + ?) BETWEEN (? AT TIME ZONE ?) AND (? AT TIME ZONE ?)", es.date, st.departure_time, ^start_time, a.timezone, ^end_time, a.timezone),
+    order_by: fragment("start_time(?) + ?", es.date, st.departure_time),
+    select: [st.id, st.stop_sequence, st.stop_headsign, st.pickup_type, st.drop_off_type, st.shape_dist_traveled, st.agency_id, st.stop_id, st.trip_id,
+          fragment("to_char(((start_time(?) + ?) AT TIME ZONE 'UTC'), 'YYYY-MM-DD HH24:MI:SS') as arrival_time", es.date, st.arrival_time),
+          fragment("to_char(((start_time(?) + ?) AT TIME ZONE 'UTC'), 'YYYY-MM-DD HH24:MI:SS') as departure_time", es.date, st.departure_time)]
   end
 end
