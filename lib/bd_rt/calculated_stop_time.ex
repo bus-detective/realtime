@@ -18,10 +18,13 @@ defmodule BdRt.CalculatedStopTime do
   # removed service)
   def between(start_time, end_time), do: between(StopTime, start_time, end_time)
   def between(query, start_time, end_time) do
+    {start_date, _} = start_time
+    {end_date, _} = end_time
+
     from st in query,
     join: a in assoc(st, :agency),
     join: t in assoc(st, :trip),
-    join: es in fragment("SELECT es.* FROM effective_services AS es WHERE es.a = ? and es.b = ? AND es.service_id = ?", ^start_time, ^end_time, t.service_id),
+    join: es in fragment("SELECT * FROM effective_services(?, ?)", ^start_date, ^end_date), on: es.service_id == t.service_id,
     where: fragment("(start_time(?) + ?) BETWEEN (? AT TIME ZONE ?) AND (? AT TIME ZONE ?)", es.date, st.departure_time, ^start_time, a.timezone, ^end_time, a.timezone),
     order_by: fragment("start_time(?) + ?", es.date, st.departure_time),
     select: [st.id, st.stop_sequence, st.stop_headsign, st.pickup_type, st.drop_off_type, st.shape_dist_traveled, st.agency_id, st.stop_id, st.trip_id,

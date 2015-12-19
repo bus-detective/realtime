@@ -39,15 +39,15 @@ defmodule BdRt.Mixfile do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-    [{:phoenix, "~> 1.0.3"},
-     {:phoenix_ecto, "~> 1.1"},
-     {:postgrex, ">= 0.0.0"},
-     {:phoenix_html, "~> 2.1"},
+    [{:phoenix, "~> 1.1.0"},
+     {:phoenix_ecto, "~> 2.0"},
+     {:postgrex, ">= 0.10.0"},
+     {:phoenix_html, "~> 2.3"},
      {:phoenix_live_reload, "~> 1.0", only: :dev},
-     {:exprotobuf, "~> 0.11.0"},
-     {:timex, "~> 0.19.4"},
+     {:exprotobuf, ">= 0.11.0"},
+     {:timex, ">= 0.19.4"},
      {:cowboy, "~> 1.0"},
-     {:httpoison, "~> 0.7.2"}]
+     {:httpoison, ">= 0.7.2"}]
   end
 
   # Aliases are shortcut or tasks specific to the current project.

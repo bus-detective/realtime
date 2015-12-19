@@ -64,6 +64,7 @@ defmodule BdRt.CalculatedStopTimeTest do
       start_time = BdRt.CalculatedStopTimeTest.to_timestamp("2015-05-12T23:00:00-0400")
       end_time = BdRt.CalculatedStopTimeTest.to_timestamp("2015-05-13T01:30:00-0400")
       stop_times = CalculatedStopTime.between(start_time, end_time) |> BdRt.Repo.all
+      IO.inspect(Ecto.Adapters.SQL.to_sql(:all, BdRt.Repo, CalculatedStopTime.between(start_time, end_time)))
       assert Enum.count(stop_times) == 3
     end
   end
