@@ -17,5 +17,18 @@ defmodule BdRt.Trip do
 
     timestamps inserted_at: :created_at
   end
+
+  @required_fields ~w(remote_id)
+  @optional_fields ~w(headsign short_name direction_id block_id
+  wheelchair_accessible bikes_allowed agency_id route_id service_id shape_id)
+
+  def changeset(model, params \\ :empty) do
+    model
+    |> cast(params, @required_fields, @optional_fields)
+    |> foreign_key_constraint(:agency_id)
+    |> foreign_key_constraint(:route_id)
+    |> foreign_key_constraint(:service_id)
+    |> foreign_key_constraint(:shape_id)
+  end
 end
 

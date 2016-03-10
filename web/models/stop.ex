@@ -19,6 +19,16 @@ defmodule BdRt.Stop do
     timestamps inserted_at: :created_at
   end
 
+  @required_fields ~w(remote_id code name)
+  @optional_fields ~w(description latitude longitude zone_id url
+  parent_station agency_id)
+
+  def changeset(model, params \\ :empty) do
+    model
+    |> cast(params, @required_fields, @optional_fields)
+    |> foreign_key_constraint(:agency_id)
+  end
+
   @direction_labels %{
     "i" => "inbound",
     "o" => "outbound",

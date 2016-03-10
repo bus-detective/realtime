@@ -10,6 +10,21 @@ defmodule BdRt.Shape do
     timestamps inserted_at: :created_at
   end
 
+  @required_fields ~w(remote_id)
+  @optional_fields ~w(agency_id)
+
+  @doc """
+  Creates a changeset based on the `model` and `params`.
+
+  If no params are provided, an invalid changeset is returned
+  with no validation performed.
+  """
+  def changeset(model, params \\ :empty) do
+    model
+    |> cast(params, @required_fields, @optional_fields)
+    |> foreign_key_constraint(:agency_id)
+  end
+
   def coordinates(model) do
     # XXX: Does this work with an entity loaded from the DB?
     Enum.sort(model.shape_points, &(&1.sequence < &2.sequence))

@@ -13,22 +13,28 @@ defmodule BdRt.Mixfile do
      deps: deps]
   end
 
-  # Configuration for the OTP application.
+  # Configuration for the OTP application
   #
-  # Type `mix help compile.app` for more information.
+  # Type `mix help compile.app` for more information
   def application do
     [mod: {BdRt, []},
-     applications:
-     [
-       :phoenix,
-       :phoenix_html,
-       :cowboy,
-       :logger,
-       :phoenix_ecto,
-       :postgrex,
-       :httpoison,
-       :tzdata
-     ]]
+      applications: applications(Mix.env)
+    ]
+  end
+
+  def applications(:test), do: [:ex_machina] ++ applications(:dev)
+  def applications(_) do
+    [
+      :phoenix,
+      :phoenix_html,
+      :cowboy,
+      :logger,
+      :phoenix_ecto,
+      :postgrex,
+      :timex,
+      :tzdata,
+      :httpoison
+    ]
   end
 
   # Specifies which paths to compile per environment.
@@ -47,7 +53,9 @@ defmodule BdRt.Mixfile do
      {:exprotobuf, ">= 0.11.0"},
      {:timex, ">= 0.19.4"},
      {:cowboy, "~> 1.0"},
-     {:httpoison, ">= 0.7.2"}]
+     {:httpoison, ">= 0.7.2"},
+     {:ex_machina, "~> 0.6", only: [:dev, :test]}
+   ]
   end
 
   # Aliases are shortcut or tasks specific to the current project.

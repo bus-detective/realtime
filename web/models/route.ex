@@ -15,4 +15,13 @@ defmodule BdRt.Route do
 
     timestamps inserted_at: :created_at
   end
+
+  @required_fields ~w(remote_id)
+  @optional_fields ~w(short_name long_name description route_type url text_color agency_id)
+
+  def changeset(model, params \\ :empty) do
+    model
+    |> cast(params, @required_fields, @optional_fields)
+    |> foreign_key_constraint(:agency_id)
+  end
 end

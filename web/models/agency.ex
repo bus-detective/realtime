@@ -20,7 +20,7 @@ defmodule BdRt.Agency do
     model.gtfs_trip_updates_url != nil
   end
 
-  @required_fields ~w(name, gtfs_vehicle_positions_url)
+  @required_fields ~w(name gtfs_vehicle_positions_url)
   @optional_fields ~w()
 
   @doc """

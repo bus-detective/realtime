@@ -19,6 +19,16 @@ defmodule BdRt.Service do
     timestamps inserted_at: :created_at
   end
 
+  @required_fields ~w(remote_id)
+  @optional_fields ~w(monday tuesday wednesday thursday friday
+  saturday sunday start_date end_date)
+
+  def changeset(model, params \\ :empty) do
+    model
+    |> cast(params, @required_fields, @optional_fields)
+    |> foreign_key_constraint(:agency_id)
+  end
+
   def for_time(time), do: for_time(time, __MODULE__)
   def for_time(time, query) do
     day_of_week = Date.weekday(Date.from(time)) |> Date.day_name |> String.downcase

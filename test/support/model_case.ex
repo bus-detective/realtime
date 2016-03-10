@@ -20,6 +20,7 @@ defmodule BdRt.ModelCase do
       import Ecto.Model
       import Ecto.Query, only: [from: 2]
       import BdRt.ModelCase
+      import BdRt.Factories
     end
   end
 
