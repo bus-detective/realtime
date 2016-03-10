@@ -73,8 +73,8 @@ defmodule BdRt.CalculatedStopTimeTest do
 
   def to_timestamp(time_str) do
     result = time_str
-    |> Timex.DateFormat.parse!("{ISO}")
-    |> Timex.Date.Convert.to_erlang_datetime
+    |> Timex.Parse.DateTime.Parser.parse!("{ISO}")
+    |> Timex.to_erlang_datetime
     |> Ecto.DateTime.from_erl
     |> Ecto.DateTime.dump
 

@@ -31,7 +31,7 @@ defmodule BdRt.Service do
 
   def for_time(time), do: for_time(time, __MODULE__)
   def for_time(time, query) do
-    day_of_week = Date.weekday(Date.from(time)) |> Date.day_name |> String.downcase
+    day_of_week = Timex.weekday(Date.from(time)) |> Timex.day_name |> String.downcase
     dow = String.to_atom(day_of_week)
 
     from s in query,
