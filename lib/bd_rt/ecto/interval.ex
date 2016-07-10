@@ -28,12 +28,19 @@ defmodule BdRt.Ecto.Interval do
     do: {:ok, %Postgrex.Interval{months: months, days: days, secs: secs}}
   def dump(_), do: :error
 
-  defp to_i(nil), do: nil
+  defp to_i(nil), do: 0
   defp to_i(int) when is_integer(int), do: int
   defp to_i(bin) when is_binary(bin) do
     case Integer.parse(bin) do
       {int, ""} -> int
-      _ -> nil
+      _ -> 0
+    end
+  end
+
+  def to_interval(time) do
+    case cast(time) do
+      {:ok, interval} -> interval
+      _ -> :error
     end
   end
 end

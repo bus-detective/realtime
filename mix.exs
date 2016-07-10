@@ -52,6 +52,7 @@ defmodule BdRt.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:exprotobuf, ">= 0.11.0"},
      {:timex, "~> 2.1.0"},
+     {:timex_ecto, "~> 1.0"},
      {:cowboy, "~> 1.0"},
      {:httpoison, ">= 0.8.0"},
      {:ex_machina, "~> 0.6", only: [:dev, :test]}

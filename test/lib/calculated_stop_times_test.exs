@@ -7,6 +7,7 @@ defmodule BdRt.CalculatedStopTimeTest do
   alias BdRt.Trip
   alias BdRt.Stop
   alias BdRt.StopTime
+  alias BdRt.Ecto.Interval
 
   defmodule StopsOnDifferenDays do
     use BdRt.ModelCase
@@ -16,10 +17,10 @@ defmodule BdRt.CalculatedStopTimeTest do
       trip = create(:trip, agency: agency, remote_id: "940135", service: service)
       stop = create(:stop, agency: agency, remote_id: "HAMBELi")
 
-      {:ok, _} = BdRt.Repo.insert(StopTime.changeset(%StopTime{}, %{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: "22:00:00"}))
-      {:ok, _} = BdRt.Repo.insert(StopTime.changeset(%StopTime{}, %{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: "23:00:00"}))
-      {:ok, _} = BdRt.Repo.insert(StopTime.changeset(%StopTime{}, %{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: "00:30:00"}))
-      {:ok, _} = BdRt.Repo.insert(StopTime.changeset(%StopTime{}, %{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: "01:00:00"}))
+      create(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("22:00:00"))
+      create(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("23:00:00"))
+      create(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("00:30:00"))
+      create(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("01:00:00"))
       :ok
     end
 
@@ -41,15 +42,15 @@ defmodule BdRt.CalculatedStopTimeTest do
   defmodule StopsOnSameDays do
     use BdRt.ModelCase
     setup do
-      {:ok, agency} = BdRt.Repo.insert(%Agency{name: "test", timezone: "America/New_York"})
-      {:ok, service} = BdRt.Repo.insert(%Service{agency_id: agency.id, tuesday: true, wednesday: true})
-      {:ok, trip} = BdRt.Repo.insert(%Trip{agency_id: agency.id, remote_id: "940135", service_id: service.id})
-      {:ok, stop} = BdRt.Repo.insert(%Stop{agency_id: agency.id, remote_id: "HAMBELi"})
+      agency = create(:agency)
+      service = create(:service, agency: agency, tuesday: true, wednesday: true)
+      trip = create(:trip, agency: agency, remote_id: "940135", service: service)
+      stop = create(:stop, agency: agency, remote_id: "HAMBELi")
 
-      {:ok, _} = BdRt.Repo.insert(StopTime.changeset(%StopTime{}, %{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: "22:00:00"}))
-      {:ok, _} = BdRt.Repo.insert(StopTime.changeset(%StopTime{}, %{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: "23:00:00"}))
-      {:ok, _} = BdRt.Repo.insert(StopTime.changeset(%StopTime{}, %{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: "24:30:00"}))
-      {:ok, _} = BdRt.Repo.insert(StopTime.changeset(%StopTime{}, %{agency_id: agency.id, stop_id: stop.id, trip_id: trip.id, departure_time: "25:00:00"}))
+      create(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("22:00:00"))
+      create(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("23:00:00"))
+      create(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("24:30:00"))
+      create(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("25:00:00"))
       :ok
     end
 
@@ -73,10 +74,7 @@ defmodule BdRt.CalculatedStopTimeTest do
 
   def to_timestamp(time_str) do
     result = time_str
-    |> Timex.Parse.DateTime.Parser.parse!("{ISO}")
-    |> Timex.to_erlang_datetime
-    |> Ecto.DateTime.from_erl
-    |> Ecto.DateTime.dump
+    |> Timex.Parse.DateTime.Parser.parse("{ISO}")
 
     case result do
       {:ok, dt} -> dt
