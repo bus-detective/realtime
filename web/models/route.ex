@@ -19,7 +19,7 @@ defmodule BdRt.Route do
   @required_fields ~w(remote_id)
   @optional_fields ~w(short_name long_name description route_type url text_color agency_id)
 
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params \\ %{}) do
     model
     |> cast(params, @required_fields, @optional_fields)
     |> foreign_key_constraint(:agency_id)

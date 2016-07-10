@@ -21,7 +21,7 @@ defmodule BdRt.ChannelCase do
       use Phoenix.ChannelTest
 
       alias BdRt.Repo
-      import Ecto.Model
+      import Ecto.Schema
       import Ecto.Query, only: [from: 2]
 
 
@@ -31,8 +31,10 @@ defmodule BdRt.ChannelCase do
   end
 
   setup tags do
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(BdRt.Repo)
+
     unless tags[:async] do
-      Ecto.Adapters.SQL.restart_test_transaction(BdRt.Repo, [])
+      Ecto.Adapters.SQL.Sandbox.mode(BdRt.Repo, {:shared, self()})
     end
 
     :ok

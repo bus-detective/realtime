@@ -22,7 +22,7 @@ defmodule BdRt.Trip do
   @optional_fields ~w(headsign short_name direction_id block_id
   wheelchair_accessible bikes_allowed agency_id route_id service_id shape_id)
 
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params \\ %{}) do
     model
     |> cast(params, @required_fields, @optional_fields)
     |> foreign_key_constraint(:agency_id)

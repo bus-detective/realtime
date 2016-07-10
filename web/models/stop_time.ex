@@ -21,7 +21,7 @@ defmodule BdRt.StopTime do
   @optional_fields ~w(stop_headsign pickup_type drop_off_type arrival_time
   departure_time stop_sequence shape_dist_traveled agency_id trip_id stop_id)
 
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params \\ %{}) do
     model
     |> cast(params, @required_fields, @optional_fields)
     |> foreign_key_constraint(:agency_id)

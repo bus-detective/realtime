@@ -6,7 +6,7 @@ defmodule BdRt.RouteStop do
     belongs_to :stop, BdRt.Stop
   end
 
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params \\ %{}) do
     model
     |> cast(params, [], [:route_id, :stop_id])
     |> foreign_key_constraint(:route_id)

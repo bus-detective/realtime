@@ -14,6 +14,8 @@ config :bd_rt, BdRt.Endpoint,
   pubsub: [name: BdRt.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
+config :bd_rt, ecto_repos: [BdRt.Repo]
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

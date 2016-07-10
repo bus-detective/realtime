@@ -23,7 +23,7 @@ defmodule BdRt.Service do
   @optional_fields ~w(monday tuesday wednesday thursday friday
   saturday sunday start_date end_date)
 
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params \\ %{}) do
     model
     |> cast(params, @required_fields, @optional_fields)
     |> foreign_key_constraint(:agency_id)

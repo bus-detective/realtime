@@ -23,7 +23,7 @@ defmodule BdRt.Stop do
   @optional_fields ~w(description latitude longitude zone_id url
   parent_station agency_id)
 
-  def changeset(model, params \\ :empty) do
+  def changeset(model, params \\ %{}) do
     model
     |> cast(params, @required_fields, @optional_fields)
     |> foreign_key_constraint(:agency_id)

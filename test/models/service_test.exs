@@ -13,7 +13,7 @@ defmodule BdRt.ServiceTest do
     {:ok, agency: agency, applicable_service: applicable_service, non_applicable_service: non_applicable_service }
   end
 
-  test 'finds services at a specific time', %{applicable_service: applicable_service} do
+  test 'finds services at a specific time' do
     services = Service.for_time(@time) |> BdRt.Repo.all
     assert Enum.count(services) == 1
     assert List.first(services).thursday

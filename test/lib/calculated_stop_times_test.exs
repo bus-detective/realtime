@@ -2,25 +2,20 @@ defmodule BdRt.CalculatedStopTimeTest do
   use BdRt.ModelCase
 
   alias BdRt.CalculatedStopTime
-  alias BdRt.Agency
-  alias BdRt.Service
-  alias BdRt.Trip
-  alias BdRt.Stop
-  alias BdRt.StopTime
   alias BdRt.Ecto.Interval
 
   defmodule StopsOnDifferenDays do
     use BdRt.ModelCase
     setup do
-      agency = create(:agency)
-      service = create(:service, agency: agency, tuesday: true, wednesday: true)
-      trip = create(:trip, agency: agency, remote_id: "940135", service: service)
-      stop = create(:stop, agency: agency, remote_id: "HAMBELi")
+      agency = insert(:agency)
+      service = insert(:service, agency: agency, tuesday: true, wednesday: true)
+      trip = insert(:trip, agency: agency, remote_id: "940135", service: service)
+      stop = insert(:stop, agency: agency, remote_id: "HAMBELi")
 
-      create(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("22:00:00"))
-      create(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("23:00:00"))
-      create(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("00:30:00"))
-      create(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("01:00:00"))
+      insert(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("22:00:00"))
+      insert(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("23:00:00"))
+      insert(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("00:30:00"))
+      insert(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("01:00:00"))
       :ok
     end
 
@@ -42,15 +37,15 @@ defmodule BdRt.CalculatedStopTimeTest do
   defmodule StopsOnSameDays do
     use BdRt.ModelCase
     setup do
-      agency = create(:agency)
-      service = create(:service, agency: agency, tuesday: true, wednesday: true)
-      trip = create(:trip, agency: agency, remote_id: "940135", service: service)
-      stop = create(:stop, agency: agency, remote_id: "HAMBELi")
+      agency = insert(:agency)
+      service = insert(:service, agency: agency, tuesday: true, wednesday: true)
+      trip = insert(:trip, agency: agency, remote_id: "940135", service: service)
+      stop = insert(:stop, agency: agency, remote_id: "HAMBELi")
 
-      create(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("22:00:00"))
-      create(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("23:00:00"))
-      create(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("24:30:00"))
-      create(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("25:00:00"))
+      insert(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("22:00:00"))
+      insert(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("23:00:00"))
+      insert(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("24:30:00"))
+      insert(:stop_time, agency: agency, stop: stop, trip: trip, departure_time: Interval.to_interval("25:00:00"))
       :ok
     end
 
