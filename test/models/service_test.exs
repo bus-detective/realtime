@@ -6,11 +6,11 @@ defmodule BdRt.ServiceTest do
 
   @time {2015, 4, 23}
   setup do
-    {:ok, agency} = BdRt.Repo.insert(%Agency {})
-    {:ok, applicable_service } = BdRt.Repo.insert(%Service { agency_id: agency.id, thursday: true, start_date: Ecto.Date.from_erl({2015, 1, 1}), end_date: Ecto.Date.from_erl({2015, 12, 31}) })
-    {:ok, non_applicable_service } = BdRt.Repo.insert(%Service { agency_id: agency.id, friday: true, start_date: Ecto.Date.from_erl({2015, 1, 1}), end_date: Ecto.Date.from_erl({2015, 12, 31}) })
+    agency = insert(:agency)
+    applicable_service = insert(:service, agency: agency, thursday: true, start_date: Timex.Date.from_erl({2015, 1, 1}), end_date: Timex.Date.from_erl({2015, 12, 31}))
+    non_applicable_service = insert(:service, agency: agency, friday: true, start_date: Timex.Date.from_erl({2015, 1, 1}), end_date: Timex.Date.from_erl({2015, 12, 31}))
 
-    {:ok, agency: agency, applicable_service: applicable_service, non_applicable_service: non_applicable_service }
+    {:ok, agency: agency, applicable_service: applicable_service, non_applicable_service: non_applicable_service}
   end
 
   test 'finds services at a specific time' do
